@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <p>Money: <span id="click">0</span></p>
+    <button onclick="c()">+1</button>
+    <button onclick="pB()">Multiply power (<span id="power">1</span>) [Cost: <span id="powercost">100</span>]</button>
+    <script>
+        var click = 0;
+        var power = 1;
+        var powercost = 100;
+        function c(){
+            click+=power;
+            document.getElementById("click").innerHTML = click
+        }
+        function pB(){
+            if(click >= powercost) {
+                click-=powercost;
+                power*=2;
+                powercost = Math.floor(powercost * 1.04)
+                document.getElementById("power").innerHTML = power;
+                document.getElementById("powercost").innerHTML = powercost;
+            }
+        }
+    </script>
+</body>
+</html>
