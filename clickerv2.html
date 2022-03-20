@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Idle money</title>
+    <style>
+        body{
+            font-family: monospace, Arial;
+            font-size: 20px;
+            background-color: #202020;
+            color: white;
+        }
+        .generators{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        .generators button{
+            margin-right: 10px;
+            margin-left: 10px;
+            border: 1.5px solid #fade43;
+            background-color: #202020;
+            color: white;
+        }
+        .generators button:hover{
+            background-color: #404040;
+        }
+        .generators button span{color: #d0d0ff}
+    </style>
+</head>
+<body onload="update()">
+    <p>Money: <span id="money">1</span>, money per second: <span id="mps">0</span><span style="float:right">Idle money v1.1</span></p>
+    <div class="generators">
+    <button onclick="bG1()">Generator 1 x<span id="g1M">1</span><br>Amount: <span id="g1A">0</span> (<span id="g1B">0</span>)<br>Cost: <span id="gC1">1</span></button>
+    <button onclick="bG2()">Generator 2 x<span id="g2M">1</span><br>Amount: <span id="g2A">0</span> (<span id="g2B">0</span>)<br>Cost: <span id="gC2">100</span></button>
+    <button onclick="bG3()">Generator 3 x<span id="g3M">1</span><br>Amount: <span id="g3A">0</span> (<span id="g3B">0</span>)<br>Cost: <span id="gC3">1000</span></button>
+    <button onclick="bG4()">Generator 4 x<span id="g4M">1</span><br>Amount: <span id="g4A">0</span> (<span id="g4B">0</span>)<br>Cost: <span id="gC4">1.000e+6</span></button>
+    </div>
+    <h1 class="complete">Reach 1e+15 money to complete game!</h1>
+    <p class="complete2"></p>
+    <script>
+        var game = {
+            money:1,
+            mps:0,
+            generators:{
+                gen1:{
+                    amount:0,
+                    buyed:0,
+                    cost:1,
+                    multi:0.5
+                },
+                gen2:{
+                    amount:0,
+                    buyed:0,
+                    cost:100,
+                    multi:0.5
+                },
+                gen3:{
+                    amount:0,
+                    buyed:0,
+                    cost:1000,
+                    multi:0.5
+                },
+                gen4:{
+                    amount:0,
+                    buyed:0,
+                    cost:1000000,
+                    multi:0.5
+                }
+            }
+        }
+        function update(){
+            setInterval(() => {
+            game.money+=game.generators.gen1.amount/20*game.generators.gen1.multi;
+            game.generators.gen1.amount+=game.generators.gen2.amount/20*game.generators.gen2.multi;
+            game.generators.gen2.amount+=game.generators.gen3.amount/20*game.generators.gen3.multi;
+            game.generators.gen3.amount+=game.generators.gen4.amount/20*game.generators.gen4.multi;
+            game.mps=game.generators.gen1.amount*game.generators.gen1.multi;
+            if(game.money<1e+6){
+                document.getElementById("money").innerHTML = Math.floor(game.money);
+            }
+            else{
+                document.getElementById("money").innerHTML = Math.floor(game.money).toExponential(3);
+            }
+            if(game.mps<1e+6){
+                document.getElementById("mps").innerHTML = Math.floor(game.mps);
+            }
+            else{
+                document.getElementById("mps").innerHTML = Math.floor(game.mps).toExponential(3);
+            }
+            if(game.generators.gen1.cost<1e+6){
+                document.getElementById("gC1").innerHTML = game.generators.gen1.cost;
+            }
+            else{
+                document.getElementById("gC1").innerHTML = game.generators.gen1.cost.toExponential(3);
+            }
+            if(game.generators.gen2.cost<1e+6){
+                document.getElementById("gC2").innerHTML = game.generators.gen2.cost;
+            }
+            else{
+                document.getElementById("gC2").innerHTML = game.generators.gen2.cost.toExponential(3);
+            }
+            if(game.generators.gen3.cost<1e+6){
+                document.getElementById("gC3").innerHTML = game.generators.gen3.cost;
+            }
+            else{
+                document.getElementById("gC3").innerHTML = game.generators.gen3.cost.toExponential(3);
+            }
+            if(game.generators.gen1.amount<1e+6){
+                document.getElementById("g1A").innerHTML = Math.floor(game.generators.gen1.amount);
+            }
+            else{
+                document.getElementById("g1A").innerHTML = Math.floor(game.generators.gen1.amount).toExponential(3);
+            }
+            if(game.generators.gen2.amount<1e+6){
+                document.getElementById("g2A").innerHTML = Math.floor(game.generators.gen2.amount);
+            }
+            else{
+                document.getElementById("g2A").innerHTML = Math.floor(game.generators.gen2.amount).toExponential(3);
+            }
+            if(game.generators.gen3.amount<1e+6){
+                document.getElementById("g3A").innerHTML = Math.floor(game.generators.gen3.amount);
+            }
+            else{
+                document.getElementById("g3A").innerHTML = Math.floor(game.generators.gen3.amount).toExponential(3);
+            }
+            if(game.generators.gen4.amount<1e+6){
+                document.getElementById("g4A").innerHTML = game.generators.gen4.amount;
+            }
+            else{
+                document.getElementById("g4A").innerHTML = game.generators.gen4.amount.toExponential(3);
+            }
+            document.getElementById("gC4").innerHTML = game.generators.gen4.cost.toExponential(3);
+            document.getElementById("g1B").innerHTML = game.generators.gen1.buyed;
+            document.getElementById("g1M").innerHTML = Math.round(game.generators.gen1.multi);
+            document.getElementById("g2B").innerHTML = game.generators.gen2.buyed;
+            document.getElementById("g2M").innerHTML = Math.round(game.generators.gen2.multi);
+            document.getElementById("g3B").innerHTML = game.generators.gen3.buyed;
+            document.getElementById("g3M").innerHTML = Math.round(game.generators.gen3.multi);
+            document.getElementById("g4B").innerHTML = game.generators.gen4.buyed;
+            document.getElementById("g4M").innerHTML = Math.round(game.generators.gen4.multi);
+            if(game.money>=1e+15){
+                document.querySelector(".complete").innerHTML = "Thanks for playing!";
+                document.querySelector(".complete2").innerHTML = "Ermand"
+            }
+            }, 50)
+            }
+        function bG(gen){
+            if(game.money>=game.generators[gen].cost){
+                game.money-=game.generators[gen].cost;
+                game.generators[gen].amount++;
+                game.generators[gen].buyed++;
+                game.generators[gen].multi*=2;
+            }
+        }
+        function bG1(){
+            if(game.money>=game.generators.gen1.cost){
+                game.money-=game.generators.gen1.cost;
+                game.generators.gen1.cost*=10;
+                game.generators.gen1.amount++;
+                game.generators.gen1.buyed++;
+                game.generators.gen1.multi*=2;
+            }
+        }
+        function bG2(){
+            if(game.money>=game.generators.gen2.cost){
+                game.money-=game.generators.gen2.cost;
+                game.generators.gen2.cost*=100;
+                game.generators.gen2.amount++;
+                game.generators.gen2.buyed++;
+                game.generators.gen2.multi*=2;
+            }
+        }
+        function bG3(){
+            if(game.money>=game.generators.gen3.cost){
+                game.money-=game.generators.gen3.cost;
+                game.generators.gen3.cost*=1000;
+                game.generators.gen3.amount++;
+                game.generators.gen3.buyed++;
+                game.generators.gen3.multi*=2;
+            }
+        }
+        function bG4(){
+            if(game.money>=game.generators.gen4.cost){
+                game.money-=game.generators.gen4.cost;
+                game.generators.gen4.cost*=1000000;
+                game.generators.gen4.amount++;
+                game.generators.gen4.buyed++;
+                game.generators.gen4.multi*=2;
+            }
+        }
+    </script>
+</body>
+</html>
